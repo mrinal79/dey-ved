@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online video editing tool with advanced features. Edit, convert, and optimize your videos in any format with our responsive web app.">
+    <meta name="keywords" content="video editor, online video editing, video converter, free video tool, optimize videos">
+    <title>VidEdit Pro - Advanced Online Video Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        nav ul li a:hover {
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            padding: 3rem 0;
+            text-align: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #555;
+        }
+
+        .ad-banner {
+            background-color: #f0f0f0;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px dashed #ccc;
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sidebar {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group select, 
+        .form-group input[type="range"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: #f9f9f9;
+            transition: var(--transition);
+        }
+
+        .form-group select:focus, 
+        .form-group input[type="range"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(72, 149, 239, 0.2);
+        }
+
+        .range-value {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #3a7bc8;
+        }
+
+        .main-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .preview-container {
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-container video, 
+        .preview-container img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+
+        .preview-placeholder {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .preview-placeholder i {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .preview-placeholder p {
+            color: #777;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        .timeline-handle {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            cursor: grab;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-btn {
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .tool-btn i {
+            color: #555;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f5f5f5;
+            padding: 0.7rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .format-option {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .format-option:hover {
+            border-color: var(--accent-color);
+            background-color: #f0f8ff;
+        }
+
+        .format-option.active {
+            border-color: var(--primary-color);
+            background-color: #e6f0ff;
+        }
+
+        .format-option i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .features {
+            padding: 3rem 0;
+            background-color: #f9f9f9;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .toolbar {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.2rem;
+            }
+            
+            .format-options {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+
+        /* Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <span>VidEdit Pro</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Professional Video Editing Made Simple</h1>
+            <p>Edit, convert, and optimize your videos online with our powerful yet easy-to-use video editing tool. No installation required.</p>
+            
+            <!-- Ad Banner -->
+            <div class="ad-banner">
+                <!-- Google AdSense Ad Unit -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID"
+                     crossorigin="anonymous"></script>
+                <!-- Responsive Ad Unit -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                     data-ad-slot="YOUR_AD_UNIT_ID"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Editor Section -->
+    <section class="container">
+        <div class="editor-container">
+            <!-- Sidebar with controls -->
+            <div class="sidebar">
+                <h3>Editing Options</h3>
+                
+                <div class="form-group">
+                    <label for="media-upload">Upload Media</label>
+                    <input type="file" id="media-upload" accept="video/*, image/*" class="btn-block">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-level">Editing Level</label>
+                    <select id="edit-level">
+                        <option value="basic">Basic (Fast processing)</option>
+                        <option value="standard" selected>Standard (Recommended)</option>
+                        <option value="advanced">Advanced (High quality)</option>
+                        <option value="professional">Professional (Maximum quality)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="brightness">Brightness <span class="range-value" id="brightness-value">0</span></label>
+                    <input type="range" id="brightness" min="-100" max="100" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contrast">Contrast <span class="range-value" id="contrast-value">0</span></label>
+                    <input type="range" id="contrast" min="-100" max="100" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="saturation">Saturation <span class="range-value" id="saturation-value">0</span></label>
+                    <input type="range" id="saturation" min="-100" max="100" value="0">
+                </div>
+                
+                <button class="btn btn-accent btn-block" id="apply-effects">Apply Effects</button>
+                
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Output Format</label>
+                    <div class="format-options">
+                        <div class="format-option active" data-format="mp4">
+                            <i class="fas fa-file-video"></i>
+                            <div>MP4</div>
+                        </div>
+                        <div class="format-option" data-format="mov">
+                            <i class="fas fa-file-video"></i>
+                            <div>MOV</div>
+                        </div>
+                        <div class="format-option" data-format="avi">
+                            <i class="fas fa-file-video"></i>
+                            <div>AVI</div>
+                        </div>
+                        <div class="format-option" data-format="gif">
+                            <i class="fas fa-file-image"></i>
+                            <div>GIF</div>
+                        </div>
+                        <div class="format-option" data-format="mp3">
+                            <i class="fas fa-file-audio"></i>
+                            <div>MP3</div>
+                        </div>
+                        <div class="format-option" data-format="wav">
+                            <i class="fas fa-file-audio"></i>
+                            <div>WAV</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-block" id="export-btn">Export Video</button>
+                
+                <!-- Vertical Ad Unit -->
+                <div class="ad-banner" style="margin-top: 1.5rem;">
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID"
+                         crossorigin="anonymous"></script>
+                    <!-- Vertical Ad Unit -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                         data-ad-slot="YOUR_VERTICAL_AD_UNIT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+            
+            <!-- Main content area -->
+            <div class="main-content">
+                <div class="preview-container" id="preview-container">
+                    <div class="preview-placeholder">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Upload a video or image to begin editing</p>
+                    </div>
+                    <video id="video-preview" controls></video>
+                    <img id="image-preview" alt="Preview">
+                </div>
+                
+                <div class="controls">
+                    <div class="toolbar">
+                        <button class="tool-btn" id="trim-btn"><i class="fas fa-cut"></i> Trim</button>
+                        <button class="tool-btn" id="crop-btn"><i class="fas fa-crop"></i> Crop</button>
+                        <button class="tool-btn" id="rotate-btn"><i class="fas fa-undo"></i> Rotate</button>
+                        <button class="tool-btn" id="text-btn"><i class="fas fa-font"></i> Text</button>
+                        <button class="tool-btn" id="filter-btn"><i class="fas fa-sliders-h"></i> Filters</button>
+                    </div>
+                    
+                    <button class="btn" id="play-btn"><i class="fas fa-play"></i> Play</button>
+                </div>
+                
+                <div class="timeline" id="timeline">
+                    <div class="timeline-progress" id="timeline-progress"></div>
+                    <div class="timeline-handle" id="timeline-handle"></div>
+                </div>
+                
+                <div class="status-bar">
+                    <div id="file-info">No file selected</div>
+                    <div id="file-size">0 MB</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 1rem; color: var(--primary-color);">Powerful Features</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem; color: #555;">Discover what makes our video editor stand out from the rest</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Fast Processing</h3>
+                    <p>Our optimized algorithms ensure your videos are processed quickly without compromising quality.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>Multiple Formats</h3>
+                    <p>Convert between all popular video formats including MP4, MOV, AVI, and more with just one click.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-sliders-h"></i>
+                    <h3>Advanced Controls</h3>
+                    <p>Fine-tune brightness, contrast, saturation, and other parameters for professional-looking results.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-cloud"></i>
+                    <h3>Cloud Storage</h3>
+                    <p>Save your projects to the cloud and access them from any device at any time.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Friendly</h3>
+                    <p>Fully responsive design works perfectly on smartphones, tablets, and desktop computers.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>Secure Processing</h3>
+                    <p>Your files are processed securely and never stored longer than necessary for your privacy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>VidEdit Pro</h3>
+                    <p>The most advanced online video editor with powerful features and intuitive interface.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 VidEdit Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const mediaUpload = document.getElementById('media-upload');
+        const previewContainer = document.getElementById('preview-container');
+        const videoPreview = document.getElementById('video-preview');
+        const imagePreview = document.getElementById('image-preview');
+        const previewPlaceholder = document.querySelector('.preview-placeholder');
+        const fileInfo = document.getElementById('file-info');
+        const fileSize = document.getElementById('file-size');
+        const brightnessSlider = document.getElementById('brightness');
+        const contrastSlider = document.getElementById('contrast');
+        const saturationSlider = document.getElementById('saturation');
+        const brightnessValue = document.getElementById('brightness-value');
+        const contrastValue = document.getElementById('contrast-value');
+        const saturationValue = document.getElementById('saturation-value');
+        const playBtn = document.getElementById('play-btn');
+        const timeline = document.getElementById('timeline');
+        const timelineProgress = document.getElementById('timeline-progress');
+        const timelineHandle = document.getElementById('timeline-handle');
+        const formatOptions = document.querySelectorAll('.format-option');
+        const exportBtn = document.getElementById('export-btn');
+        
+        // Event Listeners
+        mediaUpload.addEventListener('change', handleFileUpload);
+        brightnessSlider.addEventListener('input', updateSliderValue);
+        contrastSlider.addEventListener('input', updateSliderValue);
+        saturationSlider.addEventListener('input', updateSliderValue);
+        playBtn.addEventListener('click', togglePlayback);
+        exportBtn.addEventListener('click', exportMedia);
+        
+        // Format selection
+        formatOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                formatOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+        
+        // Timeline interaction
+        let isDragging = false;
+        
+        timeline.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('mouseup', endDrag);
+        
+        timeline.addEventListener('touchstart', startDrag);
+        document.addEventListener('touchmove', handleDrag);
+        document.addEventListener('touchend', endDrag);
+        
+        // Functions
+        function handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const fileType = file.type.split('/')[0];
+            const fileUrl = URL.createObjectURL(file);
+            
+            // Update file info
+            fileInfo.textContent = file.name;
+            fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+            
+            // Hide placeholder
+            previewPlaceholder.style.display = 'none';
+            
+            if (fileType === 'video') {
+                videoPreview.src = fileUrl;
+                videoPreview.style.display = 'block';
+                imagePreview.style.display = 'none';
+                
+                // Set up video event listeners
+                videoPreview.addEventListener('loadedmetadata', () => {
+                    // Initialize timeline
+                    updateTimeline(0);
+                });
+                
+                videoPreview.addEventListener('timeupdate', () => {
+                    if (!isDragging) {
+                        updateTimeline(videoPreview.currentTime / videoPreview.duration * 100);
+                    }
+                });
+                
+                videoPreview.addEventListener('ended', () => {
+                    playBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+                });
+                
+            } else if (fileType === 'image') {
+                imagePreview.src = fileUrl;
+                imagePreview.style.display = 'block';
+                videoPreview.style.display = 'none';
+                
+                // Reset timeline for images
+                updateTimeline(0);
+            }
+        }
+        
+        function updateSliderValue(e) {
+            const slider = e.target;
+            const valueElement = document.getElementById(`${slider.id}-value`);
+            valueElement.textContent = slider.value;
+        }
+        
+        function togglePlayback() {
+            if (videoPreview.style.display === 'block') {
+                if (videoPreview.paused) {
+                    videoPreview.play();
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                } else {
+                    videoPreview.pause();
+                    playBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+                }
+            }
+        }
+        
+        function startDrag(e) {
+            if (videoPreview.style.display === 'block') {
+                isDragging = true;
+                handleDrag(e);
+            }
+        }
+        
+        function handleDrag(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            
+            const rect = timeline.getBoundingClientRect();
+            let pos;
+            
+            if (e.type.includes('touch')) {
+                pos = (e.touches[0].clientX - rect.left) / rect.width;
+            } else {
+                pos = (e.clientX - rect.left) / rect.width;
+            }
+            
+            pos = Math.max(0, Math.min(1, pos));
+            
+            updateTimeline(pos * 100);
+            
+            if (videoPreview.style.display === 'block') {
+                videoPreview.currentTime = pos * videoPreview.duration;
+            }
+        }
+        
+        function endDrag() {
+            isDragging = false;
+        }
+        
+        function updateTimeline(percent) {
+            timelineProgress.style.width = `${percent}%`;
+            timelineHandle.style.left = `${percent}%`;
+        }
+        
+        function exportMedia() {
+            const selectedFormat = document.querySelector('.format-option.active').dataset.format;
+            
+            // In a real app, this would process and export the media
+            alert(`Exporting as ${selectedFormat.toUpperCase()} format...`);
+            
+            // Simulate processing
+            setTimeout(() => {
+                alert(`Your ${selectedFormat.toUpperCase()} file is ready to download!`);
+                
+                // In a real app, this would trigger a download
+                // For demo purposes, we'll just show a success message
+                const downloadLink = document.createElement('a');
+                downloadLink.href = '#';
+                downloadLink.textContent = 'Click here to download';
+                downloadLink.style.display = 'block';
+                downloadLink.style.marginTop = '1rem';
+                downloadLink.style.color = 'var(--primary-color)';
+                downloadLink.style.fontWeight = 'bold';
+                
+                const existingLink = document.querySelector('.download-link');
+                if (existingLink) {
+                    existingLink.replaceWith(downloadLink);
+                } else {
+                    exportBtn.insertAdjacentElement('afterend', downloadLink);
+                }
+                
+                downloadLink.classList.add('download-link');
+            }, 2000);
+        }
+        
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav ul');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+        
+        // Update nav display on resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                nav.style.display = 'flex';
+            } else {
+                nav.style.display = 'none';
+            }
+        });
+        
+        // Initialize
+        if (window.innerWidth <= 768) {
+            nav.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
